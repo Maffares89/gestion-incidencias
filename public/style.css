@@ -1,0 +1,64 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 20px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+form {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+input, select, button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+input, select {
+  background: #334155;
+  color: white;
+}
+
+button {
+  background: #22c55e;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+ul {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0;
+}
+
+li {
+  background: #1e293b;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+li select {
+  width: auto;
+}

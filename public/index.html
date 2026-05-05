@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Incidencias</title>
+  <input type="text" id="busqueda" placeholder="Buscar por cliente...">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Registro de Incidencias</h1>
+
+<form id="form">
+  <input type="text" id="cliente" placeholder="Cliente" required>
+  <input type="text" id="ubicacion" placeholder="Ubicación" required>
+  <input type="text" id="problema" placeholder="Problema" required>
+
+  <select id="estado">
+    <option>Pendiente</option>
+    <option>En proceso</option>
+    <option>Resuelto</option>
+  </select>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<h2>Lista de Incidencias</h2>
+<ul id="lista"></ul>
+
+<script src="script.js"></script>
+
+</body>
+</html>
