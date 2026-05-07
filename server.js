@@ -11,57 +11,65 @@ app.use(express.static("public"));
 
 /* Obtener incidencias */
 app.get("/incidencias", (req, res) => {
-  db.all("SELECT * FROM incidencias", [], (err, rows) => {
-    if (err) {
-      res.status(500).json(err);
-      return;
-    }
+  try {
+    const rows = db.prepare("SELECT * FROM incidencias").all();
     res.json(rows);
-  });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 /* Crear incidencia */
 app.post("/incidencias", (req, res) => {
-  const { cliente, ubicacion, problema, estado } = req.body;
+  try {
+    const { cliente, ubicacion, problema, estado } = req.body;
 
-  const sql = `INSERT INTO incidencias (cliente, ubicacion, problema, estado)
-               VALUES (?, ?, ?, ?)`;
+    const stmt = db.prepare(`
+      INSERT INTO incidencias (cliente, ubicacion, problema, estado)
+      VALUES (?, ?, ?, ?)
+    `);
 
-  db.run(sql, [cliente, ubicacion, problema, estado], function (err) {
-    if (err) {
-      res.status(500).json(err);
-      return;
-    }
-    res.json({ id: this.lastID });
-  });
+    const result = stmt.run(cliente, ubicacion, problema, estado);
+
+    res.json({ id: result.lastInsertRowid });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 /* Actualizar estado */
 app.put("/incidencias/:id", (req, res) => {
-  const { estado } = req.body;
+  try {
+    const { estado } = req.body;
 
-  db.run(
-    "UPDATE incidencias SET estado=? WHERE id=?",
-    [estado, req.params.id],
-    function (err) {
-      if (err) {
-        res.status(500).json(err);
-        return;
-      }
-      res.json({ cambios: this.changes });
-    }
-  );
+    const stmt = db.prepare(`
+      UPDATE incidencias
+      SET estado=?
+      WHERE id=?
+    `);
+
+    const result = stmt.run(estado, req.params.id);
+
+    res.json({ cambios: result.changes });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 /* Eliminar */
 app.delete("/incidencias/:id", (req, res) => {
-  db.run("DELETE FROM incidencias WHERE id=?", [req.params.id], function (err) {
-    if (err) {
-      res.status(500).json(err);
-      return;
-    }
-    res.json({ eliminados: this.changes });
-  });
+  try {
+    const stmt = db.prepare(`
+      DELETE FROM incidencias
+      WHERE id=?
+    `);
+
+    const result = stmt.run(req.params.id);
+
+    res.json({ eliminados: result.changes });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 const PORT = process.env.PORT || 3000;

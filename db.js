@@ -1,23 +1,17 @@
-const sqlite3 = require("sqlite3").verbose();
+const Database = require("better-sqlite3");
 
-const db = new sqlite3.Database("./incidencias.db", (err) => {
-  if (err) {
-    console.error("Error al conectar:", err.message);
-  } else {
-    console.log("Conectado a SQLite");
-  }
-});
+const db = new Database("incidencias.db");
 
-// Crear tabla si no existe
-db.run(`
+console.log("Conectado a SQLite");
+
+db.prepare(`
   CREATE TABLE IF NOT EXISTS incidencias (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente TEXT,
     ubicacion TEXT,
     problema TEXT,
-    estado TEXT,
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+    estado TEXT
   )
-`);
+`).run();
 
 module.exports = db;
